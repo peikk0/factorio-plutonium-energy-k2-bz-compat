@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 2023-10-25
+  Changes:
+    - Enable radioactivity damage for plutonium, MOX and breeder fuel cells and reprocessing waste
+    - Disable plutonium fuel
+    - Update energy values for MOX and breeder fuel cells
+    - Update energy values and other stats for MOX and breeder reactors
+    - Add MOX to burnable fuels (for nuclear reactor equipment and nuclear locomotives)
+    - Rebalance fuel cells and reactors recipes, with additional support for BZ mods
+    - Update stack sizes for fuel cells and reactors recipes
+    - Rebalance plutonium technologies costs
+    - Update plutonium atomic bomb recipe
+    - Update plutonium ammo damage values and effects
+    - Disable plutonium rounds magazines when K2 realistic weapons are enabled

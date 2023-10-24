@@ -1,0 +1,24 @@
+{
+  "name": "plutonium-energy-k2-bz-compat",
+  "version": "0.1.0",
+  "title": "Plutonium Energy + Krastorio 2 + BZ Compatibility",
+  "author": "peikk0",
+  "contact": "https://github.com/peikk0/factorio-plutonium-energy-k2-bz-compat/issues",
+  "homepage": "https://github.com/peikk0/factorio-plutonium-energy-k2-bz-compat",
+  "description": "Compatibility fixes for Plutonium Energy and Krastorio 2, with additional fixes for BZ mods if present",
+  "factorio_version": "1.1",
+  "dependencies": [
+    "base >= 1.1.0",
+    "Krastorio2",
+    "PlutoniumEnergy",
+    "? BrassTacks",
+    "? IfNickel",
+    "? bzcarbon",
+    "? bzchlorine",
+    "? bzlead",
+    "? bztungsten",
+    "? bzzirconium",
+    "(?) RealisticReactors",
+    "! plutoniumenergy-krastorio2"
+  ]
+}
