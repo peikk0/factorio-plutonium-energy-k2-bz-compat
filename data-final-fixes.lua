@@ -123,12 +123,17 @@ end
 
 local kr_stack_size_value = krastorio.general.getSafeSettingValue("kr-stack-size")
 if kr_stack_size_value and kr_stack_size_value ~= "No changes" then
-  data.raw.item["MOX-fuel"].stack_size = 25
-  data.raw.item["used-up-MOX-fuel"].stack_size = 25
-  data.raw.item["breeder-fuel-cell"].stack_size = 10
-  data.raw.item["used-up-breeder-fuel-cell"].stack_size = 10
-  data.raw.item["MOX-reactor"].stack_size = 1
+  kr_stack_size_value = tonumber(kr_stack_size_value)
 
+  data.raw.item["plutonium-238"].stack_size = kr_stack_size_value
+  data.raw.item["plutonium-239"].stack_size = kr_stack_size_value
+
+  data.raw.item["MOX-fuel"].stack_size = 10
+  data.raw.item["breeder-fuel-cell"].stack_size = 5
+  data.raw.item["used-up-MOX-fuel"].stack_size = 10
+  data.raw.item["used-up-breeder-fuel-cell"].stack_size = 5
+
+  data.raw.item["MOX-reactor"].stack_size = 1
   if not mods["RealisticReactors"] then
     data.raw.item["breeder-reactor"].stack_size = 1
   end
