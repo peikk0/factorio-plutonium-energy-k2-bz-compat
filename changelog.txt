@@ -1,7 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.2
+Date: 2023-10-26
+  Fixes:
+    - Apply plutonium atomic bomb fixes even when the plutonium ammo setting is disabled, as it doesn't actually disable it
+---------------------------------------------------------------------------------------------------
 Version: 0.1.1
 Date: 2023-10-25
-  Changes:
+  Fixes:
     - Fix all stack sizes
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.0
