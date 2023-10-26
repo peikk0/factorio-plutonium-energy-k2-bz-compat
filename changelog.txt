@@ -1,12 +1,19 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.3
+Date: 2023-10-27
+  Bugfixes:
+    - Fix unknown global 'sounds' for some cases (mod load order?)
+  Misc:
+    - Update thumbnail to a slightly better looking one
+---------------------------------------------------------------------------------------------------
 Version: 0.1.2
 Date: 2023-10-26
-  Fixes:
+  Bugfixes:
     - Apply plutonium atomic bomb fixes even when the plutonium ammo setting is disabled, as it doesn't actually disable it
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.1
 Date: 2023-10-25
-  Fixes:
+  Bugfixes:
     - Fix all stack sizes
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.0

@@ -1,3 +1,5 @@
+local sounds = require("__base__/prototypes/entity/sounds")
+
 -- Update plutonium atomic bomb icon
 
 -- TODO: add new icon for plutonium atomic bomb
