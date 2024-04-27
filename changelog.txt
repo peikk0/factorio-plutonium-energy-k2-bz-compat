@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.0
+Date: 2024-04-27
+  Balancing:
+    - Increased amount of cells required for MOX fuel reprocessing from 1 to 2, to match rebalancing in PlutoniumEnergy v1.5.7
+---------------------------------------------------------------------------------------------------
 Version: 0.1.3
 Date: 2023-10-27
   Bugfixes:

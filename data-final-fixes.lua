@@ -58,7 +58,7 @@ else
 end
 krastorio.recipes.replaceProduct("MOX-fuel", "MOX-fuel", { "MOX-fuel", 2 })
 
-krastorio.recipes.replaceIngredient("MOX-fuel-reprocessing", "used-up-MOX-fuel", { "used-up-MOX-fuel", 1 })
+krastorio.recipes.replaceIngredient("MOX-fuel-reprocessing", "used-up-MOX-fuel", { "used-up-MOX-fuel", 2 })
 if mods["bzchlorine"] then
   -- Uranium cell processing uses salt, so we use some here too
   krastorio.recipes.addIngredient("MOX-fuel-reprocessing", { "salt", 1 })
