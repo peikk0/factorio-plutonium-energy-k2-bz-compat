@@ -87,14 +87,14 @@ krastorio.recipes.replaceIngredient(
   "used-up-uranium-fuel-cell-solution-barrel",
   { "used-up-uranium-fuel-cell-solution-barrel", 2 }
 )
-krastorio.recipes.replaceProduct("used-up-uranium-fuel-cell-solution-centrifuging", "empty-barrel", { "empty-barrel", 2 })
+krastorio.recipes.replaceProduct("used-up-uranium-fuel-cell-solution-centrifuging", "empty-barrel", { type = "item", name = "empty-barrel", amount = 2, catalyst_amount = 2 })
 
 krastorio.recipes.replaceIngredient(
   "used-up-breeder-fuel-cell-solution-centrifuging",
   "used-up-breeder-fuel-cell-solution-barrel",
   { "used-up-breeder-fuel-cell-solution-barrel", 2 }
 )
-krastorio.recipes.replaceProduct("used-up-breeder-fuel-cell-solution-centrifuging", "empty-barrel", { "empty-barrel", 2 })
+krastorio.recipes.replaceProduct("used-up-breeder-fuel-cell-solution-centrifuging", "empty-barrel", { type = "item", name = "empty-barrel", amount = 2, catalyst_amount = 2 })
 
 -- Copy the nuclear reactor recipe for the MOX and breeder reactors, with respectively 80% and 200% of the ingredient amount
 
