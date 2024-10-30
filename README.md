@@ -12,14 +12,13 @@ This mod provides compatibility fixes for [Plutonium Energy](https://mods.factor
   - Rebalance fuel cells and reactors recipes
   - Update stack sizes for fuel cells and reactors recipes
   - Rebalance plutonium technologies costs
-  - Update plutonium atomic bomb recipe
+  - Update plutonium atomic artillery shell recipe
   - Update plutonium ammo damage values and effects
   - Disable plutonium rounds magazines when K2 realistic weapons are enabled
 
 ## TODO
 
-  - Add new icon for plutonium atomic bomb
-  - Add plutonium artillery shell
+  - Add new icon for plutonium atomic artillery shell
   - Add plutonium turret rocket
   - Add plutonium rifle magazine
   - Add plutonium anti-material rifle magazine
