@@ -1,16 +1,16 @@
 local sounds = require("__base__/prototypes/entity/sounds")
 
--- Update plutonium atomic bomb icon
+-- Update plutonium atomic artillery shell icon
 
--- TODO: add new icon for plutonium atomic bomb
+-- TODO: add new icon for plutonium atomic artillery shell
 --[[
-krastorio.icons.setItemIcon("plutonium-atomic-bomb", kr_ammo_icons_path .. "plutonium-atomic-bomb.png", 64, 4)
-if data.raw.ammo["plutonium-atomic-bomb"] then
-  data.raw.ammo["plutonium-atomic-bomb"].pictures = {
+krastorio.icons.setItemIcon("plutonium-atomic-artillery-shell", kr_ammo_icons_path .. "plutonium-atomic-artillery-shell.png", 64, 4)
+if data.raw.ammo["plutonium-atomic-artillery-shell"] then
+  data.raw.ammo["plutonium-atomic-artillery-shell"].pictures = {
     layers = {
       {
         size = 64,
-        filename = kr_ammo_icons_path .. "plutonium-atomic-bomb.png",
+        filename = kr_ammo_icons_path .. "plutonium-atomic-artillery-shell.png",
         scale = 0.25,
         mipmap_count = 4,
       },
@@ -18,7 +18,7 @@ if data.raw.ammo["plutonium-atomic-bomb"] then
         draw_as_light = true,
         flags = { "light" },
         size = 64,
-        filename = kr_ammo_icons_path .. "plutonium-atomic-bomb-light.png",
+        filename = kr_ammo_icons_path .. "plutonium-atomic-artillery-shell-light.png",
         scale = 0.25,
         mipmap_count = 4,
       },
@@ -27,36 +27,47 @@ if data.raw.ammo["plutonium-atomic-bomb"] then
 end
 ]]
 
--- Update plutonium atomic bomb recipe
+-- Update plutonium atomic artillery shell ammo
+data.raw.ammo["plutonium-atomic-artillery-shell"].order = "d[explosive-cannon-shell]-d[artillery]-a3[plutonium-atomic-artillery]"
+data.raw.ammo["plutonium-atomic-artillery-shell"].stack_size = 25
 
-krastorio.recipes.addIngredient("plutonium-atomic-bomb", { "heavy-rocket", 1 })
-krastorio.recipes.replaceIngredient("plutonium-atomic-bomb", "plutonium-239", { "plutonium-239", 23 })
-krastorio.recipes.setEnergyCost("plutonium-atomic-bomb", 10)
+-- Update plutonium atomic artillery shell recipe
+krastorio.recipes.removeIngredients("plutonium-atomic-artillery-shell", { "explosives", "radar", "rocket-control-unit" })
+krastorio.recipes.replaceIngredient("plutonium-atomic-artillery-shell", "steel-plate", { "steel-plate", 10 })
+krastorio.recipes.addIngredient("plutonium-atomic-artillery-shell", { "artillery-shell", 1 })
+krastorio.recipes.addIngredient("plutonium-atomic-artillery-shell", { "processing-unit", 10 })
+krastorio.recipes.setEnergyCost("plutonium-atomic-artillery-shell", 15)
 
--- Update plutonium atomic bomb technology
-
+-- Update plutonium atomic artillery shell technology
 krastorio.technologies.setResearchUnitCount("plutonium-atomic-bomb", 1800)
--- krastorio.technologies.addUnlockRecipe("plutonium-atomic-bomb", "plutonium-artillery-shell")
-
--- Update plutonium atomic bomb damage and effects
 
 if krastorio.general.getSafeSettingValue("kr-damage-and-ammo") then
-  data.raw.ammo["plutonium-atomic-bomb"].ammo_type.category = "heavy-rocket"
-  data.raw.ammo["plutonium-atomic-bomb"].ammo_type.range_modifier = 1.4
-  data.raw.ammo["plutonium-atomic-bomb"].ammo_type.cooldown_modifier = 3
-  data.raw.projectile["plutonium-atomic-rocket"].acceleration = 0.01
-  data.raw.projectile["plutonium-atomic-rocket"].light = { intensity = 0.8, size = 15, color = { r = 0.1, g = 0.9, b = 0.7 } }
-  data.raw.projectile["plutonium-atomic-rocket"].action.action_delivery.target_effects = {
+  data.raw["artillery-projectile"]["plutonium-atomic-artillery-projectile"].acceleration = 0.005
+  data.raw["artillery-projectile"]["plutonium-atomic-artillery-projectile"].light = { intensity = 0.8, size = 15 }
+  data.raw["artillery-projectile"]["plutonium-atomic-artillery-projectile"].smoke = {
+    {
+      name = "smoke-fast",
+      deviation = { 0.15, 0.15 },
+      frequency = 1,
+      position = { 0, 1 },
+      slow_down_factor = 1,
+      starting_frame = 3,
+      starting_frame_deviation = 5,
+      starting_frame_speed = 0,
+      starting_frame_speed_deviation = 5,
+    }
+  }
+  data.raw["artillery-projectile"]["plutonium-atomic-artillery-projectile"].action.action_delivery.target_effects = {
     {
       type = "set-tile",
       tile_name = "nuclear-ground",
-      radius = 17, -- This
+      radius = 12,
       apply_projection = true,
       tile_collision_mask = { "water-tile" },
     },
     {
       type = "destroy-cliffs",
-      radius = 13, -- This
+      radius = 10,
       explosion = "explosion",
     },
     {
@@ -66,13 +77,13 @@ if krastorio.general.getSafeSettingValue("kr-damage-and-ammo") then
     {
       type = "camera-effect",
       effect = "screen-burn",
-      duration = 60,
+      duration = 70,
       ease_in_duration = 5,
       ease_out_duration = 60,
       delay = 0,
       strength = 6,
-      full_strength_max_distance = 200,
-      max_distance = 800,
+      full_strength_max_distance = 150,
+      max_distance = 725,
     },
     {
       type = "play-sound",
@@ -94,15 +105,15 @@ if krastorio.general.getSafeSettingValue("kr-damage-and-ammo") then
     },
     {
       type = "damage",
-      damage = { amount = 2100, type = "explosion" }, -- This
+      damage = { amount = 1750, type = "explosion" },
     },
     {
       type = "damage",
-      damage = { amount = 2100, type = "radioactive" }, -- This
+      damage = { amount = 1750, type = "radioactive" },
     },
     {
       type = "show-explosion-on-chart",
-      scale = 3,
+      scale = 3.5,
     },
     {
       type = "create-entity",
@@ -115,19 +126,19 @@ if krastorio.general.getSafeSettingValue("kr-damage-and-ammo") then
     },
     {
       type = "destroy-decoratives",
-      include_soft_decoratives = true, -- soft decoratives are decoratives with grows_through_rail_path = true
+      include_soft_decoratives = true,
       include_decals = true,
       invoke_decorative_trigger = true,
-      decoratives_with_trigger_only = false, -- if true, destroys only decoratives that have trigger_effect set
-      radius = 21                            -- large radius for demostrative purposes -- This
+      decoratives_with_trigger_only = false,
+      radius = 20,
     },
     {
       type = "create-decorative",
       decorative = "nuclear-ground-patch",
-      spawn_min_radius = 16.5, -- This
-      spawn_max_radius = 17.5, -- This
-      spawn_min = 45,          -- This
-      spawn_max = 60,          -- This
+      spawn_min_radius = 12,
+      spawn_max_radius = 13,
+      spawn_min = 42,
+      spawn_max = 56,
       apply_projection = true,
       spread_evenly = true,
     },
@@ -137,13 +148,13 @@ if krastorio.general.getSafeSettingValue("kr-damage-and-ammo") then
         type = "area",
         target_entities = false,
         trigger_from_target = true,
-        repeat_count = 1400, -- This
-        radius = 11,         -- This
+        repeat_count = 1200,
+        radius = 10,
         action_delivery = {
           type = "projectile",
           projectile = "atomic-bomb-ground-zero-projectile",
-          starting_speed = 0.6 * 0.8 * 1.4, -- This
-          starting_speed_deviation = nuke_shockwave_starting_speed_deviation,
+          starting_speed = 0.6 * 0.8 * 1.4,
+          starting_speed_deviation = 0.075,
         },
       },
     },
@@ -153,13 +164,13 @@ if krastorio.general.getSafeSettingValue("kr-damage-and-ammo") then
         type = "area",
         target_entities = false,
         trigger_from_target = true,
-        repeat_count = 1400, -- This
-        radius = 50,         -- This
+        repeat_count = 1400,
+        radius = 32,
         action_delivery = {
           type = "projectile",
           projectile = "plutonium-atomic-bomb-wave",
-          starting_speed = 0.5 * 0.7 * 1.4, -- This
-          starting_speed_deviation = nuke_shockwave_starting_speed_deviation,
+          starting_speed = 0.5 * 0.7 * 1.4,
+          starting_speed_deviation = 0.075,
         },
       },
     },
@@ -170,13 +181,13 @@ if krastorio.general.getSafeSettingValue("kr-damage-and-ammo") then
         show_in_tooltip = false,
         target_entities = false,
         trigger_from_target = true,
-        repeat_count = 1400, -- This
-        radius = 43,         -- This
+        repeat_count = 1400,
+        radius = 35,
         action_delivery = {
           type = "projectile",
           projectile = "atomic-bomb-wave-spawns-cluster-nuke-explosion",
-          starting_speed = 0.5 * 0.7 * 1.4, -- This
-          starting_speed_deviation = nuke_shockwave_starting_speed_deviation,
+          starting_speed = 0.5 * 0.7 * 1.4,
+          starting_speed_deviation = 0.075,
         },
       },
     },
@@ -187,13 +198,13 @@ if krastorio.general.getSafeSettingValue("kr-damage-and-ammo") then
         show_in_tooltip = false,
         target_entities = false,
         trigger_from_target = true,
-        repeat_count = 980, -- This
-        radius = 6,         -- This
+        repeat_count = 800,
+        radius = 5,
         action_delivery = {
           type = "projectile",
           projectile = "atomic-bomb-wave-spawns-fire-smoke-explosion",
-          starting_speed = 0.5 * 0.65 * 1.4, -- This
-          starting_speed_deviation = nuke_shockwave_starting_speed_deviation,
+          starting_speed = 0.5 * 0.65 * 1.4,
+          starting_speed_deviation = 0.075,
         },
       },
     },
@@ -204,13 +215,13 @@ if krastorio.general.getSafeSettingValue("kr-damage-and-ammo") then
         show_in_tooltip = false,
         target_entities = false,
         trigger_from_target = true,
-        repeat_count = 1400, -- This
-        radius = 11,         -- This
+        repeat_count = 1000,
+        radius = 8,
         action_delivery = {
           type = "projectile",
           projectile = "atomic-bomb-wave-spawns-nuke-shockwave-explosion",
-          starting_speed = 0.5 * 0.65 * 1.4, -- This
-          starting_speed_deviation = nuke_shockwave_starting_speed_deviation,
+          starting_speed = 0.5 * 0.65 * 1.4,
+          starting_speed_deviation = 0.075,
         },
       },
     },
@@ -221,13 +232,13 @@ if krastorio.general.getSafeSettingValue("kr-damage-and-ammo") then
         show_in_tooltip = false,
         target_entities = false,
         trigger_from_target = true,
-        repeat_count = 1050, -- This
-        radius = 50,         -- This
+        repeat_count = 420,
+        radius = 32,
         action_delivery = {
           type = "projectile",
           projectile = "atomic-bomb-wave-spawns-nuclear-smoke",
-          starting_speed = 0.55 * 0.65 * 1.4, -- This
-          starting_speed_deviation = nuke_shockwave_starting_speed_deviation,
+          starting_speed = 0.55 * 0.65 * 1.4,
+          starting_speed_deviation = 0.075,
         },
       },
     },
@@ -238,8 +249,8 @@ if krastorio.general.getSafeSettingValue("kr-damage-and-ammo") then
         show_in_tooltip = false,
         target_entities = false,
         trigger_from_target = true,
-        repeat_count = 14, -- This
-        radius = 11,       -- This
+        repeat_count = 11,
+        radius = 10,
         action_delivery = {
           type = "instant",
           target_effects = {
@@ -259,7 +270,7 @@ if krastorio.general.getSafeSettingValue("kr-damage-and-ammo") then
   plutonium_atomic_bomb_wave.action = {
     {
       type = "area",
-      radius = 4,
+      radius = 3,
       ignore_collision_condition = true,
       action_delivery = {
         type = "instant",
@@ -299,7 +310,6 @@ end
 if settings.startup['enable-plutonium-ammo'].value then
   -- TODO: add plutonium rifle magazine
   -- TODO: add plutonium anti-material rifle magazine
-  -- TODO: add plutonium artillery shell
   -- TODO: add plutonium turret rocket
   -- ...or not, depleted plutonium ammo is not a thing after all
 

@@ -2,41 +2,44 @@
 -- K2 disables the nuclear-fuel tech, so plutonium-fuel is never unlocked either
 
 data.raw.item["plutonium-fuel"].fuel_category = "nuclear-fuel"
-data.raw.item["plutonium-fuel"].fuel_value = "2GJ" --2.24
-data.raw.item["plutonium-fuel"].fuel_acceleration_multiplier = 1 --1.75
-data.raw.item["plutonium-fuel"].fuel_top_speed_multiplier = 1 --1.075
+data.raw.item["plutonium-fuel"].fuel_value = "2GJ" -- 2.24
+data.raw.item["plutonium-fuel"].fuel_acceleration_multiplier = 1 -- 1.75
+data.raw.item["plutonium-fuel"].fuel_top_speed_multiplier = 1 -- 1.075
 
 -- Update fuel values
 -- MOX fuel cell holds 2.5 times more energy than a uranium fuel cell but generates energy 2 times slower
 
-data.raw.item["MOX-fuel"].fuel_value = "125GJ"
-data.raw.item["breeder-fuel-cell"].fuel_value = "31.25GJ"
+data.raw.item["plutonium-fuel-cell"].fuel_value = "125GJ"
+data.raw.item["MOX-fuel-cell"].fuel_value = "18.75GJ"
+data.raw.item["breeder-fuel-cell"].fuel_value = "62.5GJ"
 
 -- Add MOX to burnable fuels
 
 data.raw["generator-equipment"]["nuclear-reactor-equipment"].burner.fuel_category = nil
 data.raw["generator-equipment"]["nuclear-reactor-equipment"].burner.fuel_categories = {"nuclear","MOX"}
 data.raw.locomotive["kr-nuclear-locomotive"].burner.fuel_category = nil
-data.raw.locomotive["kr-nuclear-locomotive"].burner.fuel_categories = { "nuclear", "MOX" }
+data.raw.locomotive["kr-nuclear-locomotive"].burner.fuel_categories = {"nuclear", "MOX"}
 
 -- Update reactor stats
 
 data.raw.reactor["MOX-reactor"].consumption = "125MW"
-data.raw.reactor["MOX-reactor"].heat_buffer.max_transfer = "25GW"
-data.raw.reactor["MOX-reactor"].heat_buffer.specific_heat = "25MJ"
-data.raw.reactor["MOX-reactor"].max_health = 800
+data.raw.reactor["MOX-reactor"].heat_buffer.max_transfer = "50GW"
+data.raw.reactor["MOX-reactor"].heat_buffer.specific_heat = "50MJ"
+data.raw.reactor["MOX-reactor"].max_health = data.raw.reactor["MOX-reactor"].max_health * 2
 data.raw.reactor["MOX-reactor"].meltdown_action = data.raw.reactor['nuclear-reactor'].meltdown_action
 data.raw.reactor["MOX-reactor"].minable = { hardness = 1, mining_time = 1, result = "MOX-reactor" }
-data.raw.reactor["MOX-reactor"].neighbour_bonus = 0.25
+-- K2 changes the nuclear reactor neighbour bonus from 100% to 25%
+data.raw.reactor["MOX-reactor"].neighbour_bonus = data.raw.reactor["MOX-reactor"].neighbour_bonus / 4
 
 if not mods["RealisticReactors"] then
-  data.raw.reactor["breeder-reactor"].consumption = "31.25MW"
-  data.raw.reactor["breeder-reactor"].heat_buffer.max_transfer = "6.25GW"
-  data.raw.reactor["breeder-reactor"].heat_buffer.specific_heat = "6.25MJ"
-  data.raw.reactor["breeder-reactor"].max_health = 1500
+  data.raw.reactor["breeder-reactor"].consumption = "125MW"
+  data.raw.reactor["breeder-reactor"].heat_buffer.max_transfer = "50GW"
+  data.raw.reactor["breeder-reactor"].heat_buffer.specific_heat = "100MJ"
+  data.raw.reactor["breeder-reactor"].max_health = data.raw.reactor["breeder-reactor"].max_health * 2
   data.raw.reactor["breeder-reactor"].meltdown_action = data.raw.reactor['nuclear-reactor'].meltdown_action
   data.raw.reactor["breeder-reactor"].minable = { hardness = 1, mining_time = 1, result = "breeder-reactor" }
-  data.raw.reactor["breeder-reactor"].neighbour_bonus = 0.25
+  -- K2 changes the nuclear reactor neighbour bonus from 100% to 25%
+  data.raw.reactor["breeder-reactor"].neighbour_bonus = data.raw.reactor["breeder-reactor"].neighbour_bonus / 4
 end
 
 -- Update recipes
@@ -50,37 +53,68 @@ local fuel_cell_plate_from = mods["bzlead"] and "lead-plate" or "iron-plate"
 local fuel_cell_plate_to = mods["bzlead"] and "lead-plate" or "steel-plate"
 local zircaloy = data.raw.item["zircaloy-4"] and "zircaloy-4" or "zirconium-plate"
 
+-- plutonium-fuel-cell
+-- As of 2024-10-24 the BZ mods haven't been updated for PE v1.7, so we'll apply their changes here too
+krastorio.recipes.removeIngredient("plutonium-fuel-cell", "iron-plate")
 if mods["bzzirconium"] then
-  krastorio.recipes.replaceIngredient("MOX-fuel", fuel_cell_plate_from, { fuel_cell_plate_to, 1 })
-  krastorio.recipes.replaceIngredient("MOX-fuel", zircaloy, { zircaloy, 1 })
+  krastorio.recipes.addOrReplaceIngredient("plutonium-fuel-cell", fuel_cell_plate_from, { fuel_cell_plate_to, 1 })
+  krastorio.recipes.addOrReplaceIngredient("plutonium-fuel-cell", zircaloy, { zircaloy, 1 })
 else
-  krastorio.recipes.replaceIngredient("MOX-fuel", fuel_cell_plate_from, { fuel_cell_plate_to, 2 })
+  krastorio.recipes.addOrReplaceIngredient("plutonium-fuel-cell", fuel_cell_plate_from, { fuel_cell_plate_to, 2 })
 end
-krastorio.recipes.replaceProduct("MOX-fuel", "MOX-fuel", { "MOX-fuel", 2 })
+krastorio.recipes.replaceProduct("plutonium-fuel-cell", "plutonium-fuel-cell", { "plutonium-fuel-cell", 2 })
 
-krastorio.recipes.replaceIngredient("MOX-fuel-reprocessing", "used-up-MOX-fuel", { "used-up-MOX-fuel", 2 })
+krastorio.recipes.replaceIngredient("plutonium-fuel-cell-reprocessing", "used-up-plutonium-fuel-cell", { "used-up-plutonium-fuel-cell", 2 })
 if mods["bzchlorine"] then
   -- Uranium cell processing uses salt, so we use some here too
-  krastorio.recipes.addIngredient("MOX-fuel-reprocessing", { "salt", 1 })
+  krastorio.recipes.addOrReplaceIngredient("plutonium-fuel-cell-reprocessing", { "salt", 1 })
 end
-krastorio.recipes.addProduct("MOX-fuel-reprocessing", { "stone", 4 })
-krastorio.recipes.addProduct("MOX-fuel-reprocessing", { type = "item", name = "tritium", probability = 0.15, amount = 1 })
+krastorio.recipes.addProduct("plutonium-fuel-cell-reprocessing", { "stone", 4 })
+krastorio.recipes.addProduct("plutonium-fuel-cell-reprocessing", { type = "item", name = "tritium", probability = 0.15, amount = 1 })
 
+-- MOX-fuel-cell
+krastorio.recipes.removeIngredient("MOX-fuel-cell", "iron-plate")
 if mods["bzzirconium"] then
-  krastorio.recipes.replaceIngredient("breeder-fuel-cell", fuel_cell_plate_from, { fuel_cell_plate_to, 1 })
-  krastorio.recipes.replaceIngredient("breeder-fuel-cell", zircaloy, { zircaloy, 1 })
+  krastorio.recipes.addOrReplaceIngredient("MOX-fuel-cell", fuel_cell_plate_from, { fuel_cell_plate_to, 1 })
+  krastorio.recipes.addOrReplaceIngredient("MOX-fuel-cell", zircaloy, { zircaloy, 1 })
 else
-  krastorio.recipes.replaceIngredient("breeder-fuel-cell", fuel_cell_plate_from, { fuel_cell_plate_to, 2 })
+  krastorio.recipes.addOrReplaceIngredient("MOX-fuel-cell", fuel_cell_plate_from, { fuel_cell_plate_to, 2 })
 end
-krastorio.recipes.replaceProduct("breeder-fuel-cell", "breeder-fuel-cell", { "breeder-fuel-cell", 1 })
+krastorio.recipes.replaceProduct("MOX-fuel-cell", "MOX-fuel-cell", { "MOX-fuel-cell", 4 })
 
-krastorio.recipes.replaceIngredient("breeder-fuel-cell-from-uranium-cell", "iron-plate", { fuel_cell_plate_to, 2 })
+krastorio.recipes.replaceIngredient("MOX-fuel-cell-reprocessing", "used-up-MOX-fuel-cell", { "used-up-MOX-fuel-cell", 4 })
+if mods["bzchlorine"] then
+  -- Uranium cell processing uses salt, so we use some here too
+  krastorio.recipes.addOrReplaceIngredient("MOX-fuel-cell-reprocessing", { "salt", 1 })
+end
+krastorio.recipes.addProduct("MOX-fuel-cell-reprocessing", { "stone", 4 })
+krastorio.recipes.addProduct("MOX-fuel-cell-reprocessing", { type = "item", name = "tritium", probability = 0.15, amount = 1 })
+
+-- breeder-fuel-cell
+if mods["bzzirconium"] then
+  krastorio.recipes.addOrReplaceIngredient("breeder-fuel-cell", fuel_cell_plate_from, { fuel_cell_plate_to, 2 })
+  krastorio.recipes.addOrReplaceIngredient("breeder-fuel-cell", zircaloy, { zircaloy, 1 })
+else
+  krastorio.recipes.addOrReplaceIngredient("breeder-fuel-cell", fuel_cell_plate_from, { fuel_cell_plate_to, 4 })
+end
+-- Original result count is 2 which can't be divided by 5 so we multiply the ingredients by 5 instead
+for _, ingredient in pairs(krastorio.recipes.getIngredients("breeder-fuel-cell")) do
+  krastorio.recipes.multiplyIngredient("breeder-fuel-cell", krastorio.recipes.getIngredientName(ingredient), 5)
+end
+
+krastorio.recipes.replaceIngredient("breeder-fuel-cell-from-uranium-cell", "iron-plate", { fuel_cell_plate_to, 4 })
 krastorio.recipes.replaceIngredient("breeder-fuel-cell-from-uranium-cell", "used-up-uranium-fuel-cell", { "used-up-uranium-fuel-cell", 2 })
-krastorio.recipes.replaceProduct("breeder-fuel-cell-from-uranium-cell", "breeder-fuel-cell", { "breeder-fuel-cell", 2 })
+-- Original result count is 4 which can't be divided by 5 so we multiply the ingredients by 5 instead
+for _, ingredient in pairs(krastorio.recipes.getIngredients("breeder-fuel-cell-from-uranium-cell")) do
+  krastorio.recipes.multiplyIngredient("breeder-fuel-cell-from-uranium-cell", krastorio.recipes.getIngredientName(ingredient), 5)
+end
 
-krastorio.recipes.replaceIngredient("breeder-fuel-cell-from-MOX-fuel", "iron-plate", { fuel_cell_plate_to, 1 })
-krastorio.recipes.replaceIngredient("breeder-fuel-cell-from-MOX-fuel", "used-up-MOX-fuel", { "used-up-MOX-fuel", 1 })
-krastorio.recipes.replaceProduct("breeder-fuel-cell-from-MOX-fuel", "breeder-fuel-cell", { "breeder-fuel-cell", 1 })
+krastorio.recipes.replaceIngredient("breeder-fuel-cell-from-MOX-fuel-cell", "iron-plate", { fuel_cell_plate_to, 2 })
+krastorio.recipes.replaceIngredient("breeder-fuel-cell-from-MOX-fuel-cell", "used-up-MOX-fuel-cell", { "used-up-MOX-fuel-cell", 1 })
+-- Original result count is 2 which can't be divided by 5 so we multiply the ingredients by 5 instead
+for _, ingredient in pairs(krastorio.recipes.getIngredients("breeder-fuel-cell-from-MOX-fuel-cell")) do
+  krastorio.recipes.multiplyIngredient("breeder-fuel-cell-from-MOX-fuel-cell", krastorio.recipes.getIngredientName(ingredient), 5)
+end
 
 krastorio.recipes.replaceIngredient(
   "used-up-uranium-fuel-cell-solution-centrifuging",
@@ -96,7 +130,7 @@ krastorio.recipes.replaceIngredient(
 )
 krastorio.recipes.replaceProduct("used-up-breeder-fuel-cell-solution-centrifuging", "empty-barrel", { type = "item", name = "empty-barrel", amount = 2, catalyst_amount = 2 })
 
--- Copy the nuclear reactor recipe for the MOX and breeder reactors, with respectively 80% and 200% of the ingredient amount
+-- Copy the nuclear reactor recipe for the MOX and breeder reactors, with respectively 40% and 200% of the ingredient amount
 
 -- The BZ mods from BrassTacks, IfNickel, bzcarbon, bztungsten and bzzirconium also add ingredients to the recipe if enabled,
 -- so we can easily make sure they are added here too by having them as optional dependencies and copying the recipe only after they are all processed
@@ -107,7 +141,7 @@ data.raw.recipe["MOX-reactor"].energy_required = 120
 data.raw.recipe["MOX-reactor"].category = "crafting-with-fluid"
 krastorio.recipes.overrideIngredients("MOX-reactor", nuclear_reactor_ingredients)
 for _, ingredient in pairs(nuclear_reactor_ingredients) do
-  krastorio.recipes.multiplyIngredient("MOX-reactor", krastorio.recipes.getIngredientName(ingredient), 0.8)
+  krastorio.recipes.multiplyIngredient("MOX-reactor", krastorio.recipes.getIngredientName(ingredient), 0.4)
 end
 
 if not mods["RealisticReactors"] then
@@ -128,10 +162,12 @@ if kr_stack_size_value and kr_stack_size_value ~= "No changes" then
   data.raw.item["plutonium-238"].stack_size = kr_stack_size_value
   data.raw.item["plutonium-239"].stack_size = kr_stack_size_value
 
-  data.raw.item["MOX-fuel"].stack_size = 10
-  data.raw.item["breeder-fuel-cell"].stack_size = 5
-  data.raw.item["used-up-MOX-fuel"].stack_size = 10
-  data.raw.item["used-up-breeder-fuel-cell"].stack_size = 5
+  data.raw.item["MOX-fuel-cell"].stack_size = 20
+  data.raw.item["breeder-fuel-cell"].stack_size = 1
+  data.raw.item["plutonium-fuel-cell"].stack_size = 10
+  data.raw.item["used-up-MOX-fuel-cell"].stack_size = 20
+  data.raw.item["used-up-breeder-fuel-cell"].stack_size = 1
+  data.raw.item["used-up-plutonium-fuel-cell"].stack_size = 10
 
   data.raw.item["MOX-reactor"].stack_size = 1
   if not mods["RealisticReactors"] then
@@ -141,12 +177,13 @@ end
 
 -- Update technologies, trying to follow the nuclear tech rebalancing by K2
 
-krastorio.technologies.setResearchUnitCount("plutonium-processing", 1500)
-krastorio.technologies.setResearchUnitCount("plutonium-nuclear-power", 600)
-krastorio.technologies.setResearchUnitCount("MOX-fuel-reprocessing", 1000)
+krastorio.technologies.setResearchUnitCount("plutonium-processing", 3750)
+krastorio.technologies.setResearchUnitCount("plutonium-nuclear-power", 500)
+krastorio.technologies.setResearchUnitCount("MOX-nuclear-power", 300)
+krastorio.technologies.setResearchUnitCount("plutonium-reprocessing", 2500)
 krastorio.technologies.setResearchUnitCount("nuclear-breeding", 5000)
 krastorio.technologies.setResearchUnitCount("breeder-fuel-cell-from-uranium-cell", 2500)
-krastorio.technologies.setResearchUnitCount("breeder-fuel-cell-from-MOX-fuel", 2500)
+krastorio.technologies.setResearchUnitCount("breeder-fuel-cell-from-MOX-fuel-cell", 2500)
 
 -- Ammo fixes
 

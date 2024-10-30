@@ -1,4 +1,17 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.3.0
+Date: 2024-10-30
+  Features:
+    - Update for Plutonium Energy v1.7.0
+    - Add rebalancing for plutonium fuel cells
+    - Update energy values, stack sizes and recipes for all fuel cells, breeder fuel cells recipe ingredients are multiplied by 5 to keep them balanced as the product count can't be divided by 5
+    - Update energy consumption, max health and neighbour bonus for the MOX and breeder reactors
+    - Update technology costs
+    - Remove rebalancing for atomic bombs that are now gone
+    - Add rebalancing for plutonium atomic artillery shells, trying to fit the damage values and effects in between K2's nuclear and antimatter artillery shells
+  Bugfixes:
+    - Fix heat buffer values for the MOX and breeder reactors to match the ones from the nuclear reactor
+---------------------------------------------------------------------------------------------------
 Version: 0.2.1
 Date: 2024-04-28
   Bugfixes:
