@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.5.0
+Date: 2025-11-16
+  Features:
+    - Updated for Factorio 2.0, Krastorio 2.0 and Plutonium Energy 1.8.0
+  Changes:
+    - Disabled Plutonium fuel by default to match nuclear fuel being disabled in Krastorio 2, added a startup setting to enable it back.
+---------------------------------------------------------------------------------------------------
 Version: 0.4.0
 Date: 2025-11-15
   Features:
