@@ -1,6 +1,6 @@
 {
   "name": "plutonium-energy-k2-bz-compat",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "title": "Plutonium Energy + Krastorio 2 + BZ Compatibility",
   "author": "peikk0",
   "contact": "https://github.com/peikk0/factorio-plutonium-energy-k2-bz-compat/issues",
@@ -10,7 +10,7 @@
   "dependencies": [
     "base >= 1.1.0",
     "Krastorio2",
-    "PlutoniumEnergy >= 1.7.0",
+    "PlutoniumEnergy >= 1.7.16",
     "? BrassTacks",
     "? IfNickel",
     "? bzcarbon",

@@ -32,10 +32,9 @@ data.raw.ammo["plutonium-atomic-artillery-shell"].order = "d[explosive-cannon-sh
 data.raw.ammo["plutonium-atomic-artillery-shell"].stack_size = 25
 
 -- Update plutonium atomic artillery shell recipe
-krastorio.recipes.removeIngredients("plutonium-atomic-artillery-shell", { "explosives", "radar", "rocket-control-unit" })
-krastorio.recipes.replaceIngredient("plutonium-atomic-artillery-shell", "steel-plate", { "steel-plate", 10 })
-krastorio.recipes.addIngredient("plutonium-atomic-artillery-shell", { "artillery-shell", 1 })
-krastorio.recipes.addIngredient("plutonium-atomic-artillery-shell", { "processing-unit", 10 })
+krastorio.recipes.removeIngredients("plutonium-atomic-artillery-shell", { "explosives", "radar" })
+krastorio.recipes.replaceIngredient("plutonium-atomic-artillery-shell", "steel-plate", { type = "item", name = "steel-plate", amount = 10 })
+krastorio.recipes.addIngredient("plutonium-atomic-artillery-shell", { type = "item", name = "artillery-shell", amount = 1 })
 krastorio.recipes.setEnergyCost("plutonium-atomic-artillery-shell", 15)
 
 -- Update plutonium atomic artillery shell technology
@@ -105,11 +104,11 @@ if krastorio.general.getSafeSettingValue("kr-damage-and-ammo") then
     },
     {
       type = "damage",
-      damage = { amount = 1750, type = "explosion" },
+      damage = { amount = 3500, type = "explosion" },
     },
     {
       type = "damage",
-      damage = { amount = 1750, type = "radioactive" },
+      damage = { amount = 3500, type = "radioactive" },
     },
     {
       type = "show-explosion-on-chart",
@@ -316,6 +315,16 @@ if settings.startup['enable-plutonium-ammo'].value then
   -- Update ammo technologies
 
   -- krastorio.technologies.addUnlockRecipe("kr-turret-rocket", "plutonium-turret-rocket")
+
+  -- Update stack size
+
+  local kr_stack_size_value = krastorio.general.getSafeSettingValue("kr-stack-size")
+  if kr_stack_size_value and kr_stack_size_value ~= "No changes" then
+    kr_stack_size_value = tonumber(kr_stack_size_value)
+
+    data.raw.ammo["plutonium-cannon-shell"].stack_size = kr_stack_size_value
+    data.raw.ammo["explosive-plutonium-cannon-shell"].stack_size = kr_stack_size_value
+  end
 
   -- K2 damage rebalancing
 

@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.4.0
+Date: 2025-11-15
+  Features:
+    - Update for Plutonium Energy v1.7.16
+  Notes:
+    - Plutonium fuel is now available as a result of using rocket fuel instead of nuclear fuel since PU v1.7.3
+---------------------------------------------------------------------------------------------------
 Version: 0.3.0
 Date: 2024-10-30
   Features:
