@@ -33,7 +33,7 @@ data.raw.reactor["MOX-reactor"].minable = { hardness = 1, mining_time = 1, resul
 -- K2 changes the nuclear reactor neighbour bonus from 100% to 25%
 data.raw.reactor["MOX-reactor"].neighbour_bonus = data.raw.reactor["MOX-reactor"].neighbour_bonus / 4
 
-if not mods["RealisticReactors"] then
+if not mods["RealisticReactorsReborn"] then
   data.raw.reactor["breeder-reactor"].consumption = "125MW"
   data.raw.reactor["breeder-reactor"].heat_buffer.max_transfer = "50GW"
   data.raw.reactor["breeder-reactor"].heat_buffer.specific_heat = "100MJ"
@@ -51,13 +51,13 @@ end
 
 -- If enabled, the BZ mods also use lead plates instead of steel, and replace half of it with zircaloy
 -- Also 1 fuel cell = 1 steel/lead/zircaloy plate
-local fuel_cell_plate_from = mods["bzlead"] and "lead-plate" or "iron-plate"
-local fuel_cell_plate_to = mods["bzlead"] and "lead-plate" or "steel-plate"
+local fuel_cell_plate_from = data.raw.item["lead-plate"] and "lead-plate" or "iron-plate"
+local fuel_cell_plate_to = data.raw.item["lead-plate"] and "lead-plate" or "steel-plate"
 local zircaloy = data.raw.item["zircaloy-4"] and "zircaloy-4" or "zirconium-plate"
 
 -- plutonium-fuel-cell
 data_util.remove_ingredient("plutonium-fuel-cell", "iron-plate")
-if mods["bzzirconium"] then
+if mods["bzzirconium"] or mods["bzzirconium2"] then
   data_util.replace_and_overwrite_or_add_ingredient("plutonium-fuel-cell", fuel_cell_plate_from, { type = "item", name = fuel_cell_plate_to, amount = 1 })
   data_util.overwrite_or_add_ingredient("plutonium-fuel-cell", { type = "item", name = zircaloy, amount = 1 })
 else
@@ -66,15 +66,15 @@ end
 data_util.overwrite_or_add_product("plutonium-fuel-cell", { type = "item", name = "plutonium-fuel-cell", amount = 2 })
 
 data_util.overwrite_or_add_ingredient("plutonium-fuel-cell-reprocessing", { type = "item", name = "depleted-plutonium-fuel-cell", amount = 2 })
-if mods["bzchlorine"] then
+if mods["bzchlorine"] or mods["bzchlorine2"] then
   -- Uranium cell processing uses salt, so we use some here too
   data_util.overwrite_or_add_ingredient("plutonium-fuel-cell-reprocessing", { type = "item", name = "salt", amount = 1 })
 end
 data_util.overwrite_or_add_product("plutonium-fuel-cell-reprocessing", { type = "item", name = "stone", amount = 4 })
-data_util.overwrite_or_add_product("plutonium-fuel-cell-reprocessing", { type = "item", name = "kr-tritium", probability = 0.15, amount = 1 })
+data_util.overwrite_or_add_product("plutonium-fuel-cell-reprocessing", { type = "item", name = "kr-tritium", independent_probability = 0.15, amount = 1 })
 
 -- MOX-fuel-cell
-if mods["bzzirconium"] then
+if mods["bzzirconium"] or mods["bzzirconium2"] then
   data_util.replace_and_overwrite_or_add_ingredient("MOX-fuel-cell", fuel_cell_plate_from, { type = "item", name = fuel_cell_plate_to, amount = 1 })
   data_util.overwrite_or_add_ingredient("MOX-fuel-cell", { type = "item", name = zircaloy, amount = 1 })
 else
@@ -83,15 +83,15 @@ end
 data_util.overwrite_or_add_product("MOX-fuel-cell", { type = "item", name = "MOX-fuel-cell", amount = 4 })
 
 data_util.overwrite_or_add_ingredient("MOX-fuel-cell-reprocessing", { type = "item", name = "depleted-MOX-fuel-cell", amount = 4 })
-if mods["bzchlorine"] then
+if mods["bzchlorine"] or mods["bzchlorine2"] then
   -- Uranium cell processing uses salt, so we use some here too
   data_util.overwrite_or_add_ingredient("MOX-fuel-cell-reprocessing", { type = "item", name = "salt", amount = 1 })
 end
 data_util.overwrite_or_add_product("MOX-fuel-cell-reprocessing", { type = "item", name = "stone", amount = 4 })
-data_util.overwrite_or_add_product("MOX-fuel-cell-reprocessing", { type = "item", name = "kr-tritium", probability = 0.15, amount = 1 })
+data_util.overwrite_or_add_product("MOX-fuel-cell-reprocessing", { type = "item", name = "kr-tritium", independent_probability = 0.15, amount = 1 })
 
 -- breeder-fuel-cell
-if mods["bzzirconium"] then
+if mods["bzzirconium"] or mods["bzzirconium2"] then
   data_util.replace_and_overwrite_or_add_ingredient("breeder-fuel-cell", fuel_cell_plate_from, { type = "item", name = fuel_cell_plate_to, amount = 2 })
   data_util.overwrite_or_add_ingredient("breeder-fuel-cell", { type = "item", name = zircaloy, amount = 1 })
 else
@@ -134,15 +134,15 @@ data_util.overwrite_or_add_product("breeder-fuel-cell-waste-solution-centrifugin
 -- so we can easily make sure they are added here too by having them as optional dependencies and copying the recipe only after they are all processed
 
 data.raw.recipe["MOX-reactor"].energy_required = 120
-data.raw.recipe["MOX-reactor"].category = "crafting-with-fluid"
+data.raw.recipe["MOX-reactor"].categories = { "crafting-with-fluid" }
 data.raw.recipe["MOX-reactor"].ingredients = table.deepcopy(data.raw.recipe["nuclear-reactor"].ingredients)
 for _, ingredient in pairs(data.raw.recipe["MOX-reactor"].ingredients) do
   ingredient.amount = ingredient.amount * 0.4
 end
 
-if not mods["RealisticReactors"] then
+if not mods["RealisticReactorsReborn"] then
   data.raw.recipe["breeder-reactor"].energy_required = 120
-  data.raw.recipe["breeder-reactor"].category = "crafting-with-fluid"
+  data.raw.recipe["breeder-reactor"].categories = { "crafting-with-fluid" }
   data.raw.recipe["breeder-reactor"].ingredients = table.deepcopy(data.raw.recipe["nuclear-reactor"].ingredients)
   for _, ingredient in pairs(data.raw.recipe["breeder-reactor"].ingredients) do
     ingredient.amount = ingredient.amount * 2
@@ -162,7 +162,7 @@ data.raw.item["depleted-breeder-fuel-cell"].stack_size = 1
 data.raw.item["depleted-plutonium-fuel-cell"].stack_size = 10
 
 data.raw.item["MOX-reactor"].stack_size = 1
-if not mods["RealisticReactors"] then
+if not mods["RealisticReactorsReborn"] then
   data.raw.item["breeder-reactor"].stack_size = 1
 end
 
