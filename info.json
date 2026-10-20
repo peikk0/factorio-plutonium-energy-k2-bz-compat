@@ -10,7 +10,7 @@
     "dependencies": [
         "base >= 2.1.20",
         "Krastorio2 >= 2.1.0",
-        "PlutoniumEnergy >= 1.8.3",
+        "PlutoniumEnergy >= 1.9.2",
         "? BrassTacks",
         "? IfNickel",
         "? bzcarbon",

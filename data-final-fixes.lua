@@ -107,20 +107,6 @@ else
 end
 data_util.overwrite_or_add_product('MOX-fuel-cell', { type = 'item', name = 'MOX-fuel-cell', amount = 4 })
 
-data_util.overwrite_or_add_ingredient(
-    'MOX-fuel-cell-reprocessing',
-    { type = 'item', name = 'depleted-MOX-fuel-cell', amount = 4 }
-)
-if mods['bzchlorine'] or mods['bzchlorine2'] then
-    -- Uranium cell processing uses salt, so we use some here too
-    data_util.overwrite_or_add_ingredient('MOX-fuel-cell-reprocessing', { type = 'item', name = 'salt', amount = 1 })
-end
-data_util.overwrite_or_add_product('MOX-fuel-cell-reprocessing', { type = 'item', name = 'stone', amount = 4 })
-data_util.overwrite_or_add_product(
-    'MOX-fuel-cell-reprocessing',
-    { type = 'item', name = 'kr-tritium', independent_probability = 0.15, amount = 1 }
-)
-
 -- breeder-fuel-cell
 if mods['bzzirconium'] or mods['bzzirconium2'] then
     data_util.replace_and_overwrite_or_add_ingredient(
@@ -152,20 +138,6 @@ data_util.overwrite_or_add_ingredient(
 )
 -- Original result count is 4 which can't be divided by 5 so we multiply the ingredients by 5 instead
 for _, ingredient in pairs(data.raw.recipe['breeder-fuel-cell-from-uranium-cell'].ingredients) do
-    ingredient.amount = ingredient.amount * 5
-end
-
-data_util.replace_and_overwrite_or_add_ingredient(
-    'breeder-fuel-cell-from-MOX-fuel-cell',
-    'iron-plate',
-    { type = 'item', name = fuel_cell_plate_to, amount = 2 }
-)
-data_util.overwrite_or_add_ingredient(
-    'breeder-fuel-cell-from-MOX-fuel-cell',
-    { type = 'item', name = 'depleted-MOX-fuel-cell', amount = 1 }
-)
--- Original result count is 2 which can't be divided by 5 so we multiply the ingredients by 5 instead
-for _, ingredient in pairs(data.raw.recipe['breeder-fuel-cell-from-MOX-fuel-cell'].ingredients) do
     ingredient.amount = ingredient.amount * 5
 end
 
@@ -216,7 +188,6 @@ data.raw.item['plutonium-239'].stack_size = 200
 data.raw.item['MOX-fuel-cell'].stack_size = 20
 data.raw.item['breeder-fuel-cell'].stack_size = 1
 data.raw.item['plutonium-fuel-cell'].stack_size = 10
-data.raw.item['depleted-MOX-fuel-cell'].stack_size = 20
 data.raw.item['depleted-breeder-fuel-cell'].stack_size = 1
 data.raw.item['depleted-plutonium-fuel-cell'].stack_size = 10
 
@@ -231,9 +202,7 @@ data.raw.technology['plutonium-processing'].unit.count = 3750
 data.raw.technology['plutonium-nuclear-power'].unit.count = 500
 data.raw.technology['MOX-nuclear-power'].unit.count = 300
 data.raw.technology['plutonium-reprocessing'].unit.count = 2500
-data.raw.technology['nuclear-breeding'].unit.count = 5000
 data.raw.technology['breeder-fuel-cell-from-uranium-cell'].unit.count = 2500
-data.raw.technology['breeder-fuel-cell-from-MOX-fuel-cell'].unit.count = 2500
 
 -- Ammo fixes
 
