@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.6.0
+Date: 2026-10-20
+  Features:
+    - Updated for Factorio 2.1, Krastorio 2.1 and Plutonium Energy 1.9.2
+    - Added support for forks of BZ, Brass Tacks and If I Had a Nickel mods
+  Changes:
+    - Replaced RealisticReactors dependency with RealisticReactorsReborn
+---------------------------------------------------------------------------------------------------
 Version: 0.5.0
 Date: 2025-11-16
   Features:
